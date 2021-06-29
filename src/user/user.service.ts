@@ -36,4 +36,12 @@ export class UserService {
         
         return this.userRepository.update(id_user, { password: newPasswordHash });
     }
+
+    async deleteUser(param_id_user: string, id_user: string) {
+        if (param_id_user != id_user) {
+            throw new InternalServerErrorException('Usuário não encontrado');
+        }
+
+        return this.userRepository.delete(id_user);
+    }
 }

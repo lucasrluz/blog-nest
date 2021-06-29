@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { EditUserDto } from './dto/edit-user.dto';
@@ -27,5 +27,14 @@ export class UserController {
         @Body() newPassword: EditUserDto
     ) {
         return this.userService.editUser(id, req.user.id_user, newPassword);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete(':id')
+    deleteUser(
+        @Request() req,
+        @Param('id') id: string
+    ) {
+        return this.userService.deleteUser(id, req.user.id_user);
     }
 }
