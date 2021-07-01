@@ -37,5 +37,10 @@ export class PostService {
 
         return post;
     }
-    // findByUser
+
+    async findByUser(username: string) {
+        const user = await this.userRepository.findOne({ username: username });
+        
+        return await this.postRepository.find({ where: { user: { id_user: user.id_user }}});
+    }
 }

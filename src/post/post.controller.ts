@@ -22,4 +22,9 @@ export class PostController {
     findById(@Param('id') id_post: number) {
         return this.postService.findById(id_post);
     }
+
+    @Get('user/:username')
+    findByUser(@Param('username') username: string) {
+        return this.postService.findByUser(username);
+    }
 }
