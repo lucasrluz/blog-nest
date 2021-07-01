@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { User } from 'src/user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { Post } from './entity/post.entity';
@@ -28,6 +28,14 @@ export class PostService {
         return this.postRepository.find();
     }
 
-    // findById
+    async findById(id_post: number) {
+        const post = await this.postRepository.findOne(id_post);
+
+        if (post === undefined) {
+            throw new NotFoundException('Post não encontrado');
+        }
+
+        return post;
+    }
     // findByUser
 }
