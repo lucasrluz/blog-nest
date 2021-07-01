@@ -24,4 +24,10 @@ export class PostService {
         
         return this.postRepository.insert(post);
     }
+    async findAll() {
+        return this.postRepository.find();
+    }
+
+    // findById
+    // findByUser
 }
