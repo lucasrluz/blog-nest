@@ -43,4 +43,24 @@ export class PostService {
         
         return await this.postRepository.find({ where: { user: { id_user: user.id_user }}});
     }
+
+    async editPost(id_user: number, id_post: number, post: IPost) {
+        const postValidate = await this.postRepository.findOne({ where: { id_post: id_post, user: { id_user: id_user }}});
+
+        if (postValidate === undefined) {
+            throw new NotFoundException('Usuário ou Post não encontrado')
+        }
+
+        const postNameValidate = await this.postRepository.findOne({ title: post.title });
+        
+        if (postNameValidate !== undefined) {
+            throw new InternalServerErrorException('Este título já está em uso');
+        }
+
+        const user = await this.userRepository.findOne(id_user);
+
+        post.user = user;
+        
+        return this.postRepository.update(id_post, post); 
+    }
 }
