@@ -63,4 +63,14 @@ export class PostService {
         
         return this.postRepository.update(id_post, post); 
     }
+
+    async deletePost(id_user: number, id_post: number) {
+        const postValidate = await this.postRepository.findOne({ where: { id_post: id_post, user: { id_user: id_user }}});
+
+        if (postValidate === undefined) {
+            throw new NotFoundException('Usuário ou Post não encontrado')
+        }
+
+        return this.postRepository.delete(id_post);
+    } 
 }
