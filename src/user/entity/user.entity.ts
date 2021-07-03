@@ -1,3 +1,4 @@
+import { Comment } from 'src/comment/entity/comment.entity';
 import { Post } from 'src/post/entity/post.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
@@ -14,4 +15,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }
