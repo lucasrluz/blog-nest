@@ -6,8 +6,8 @@ import { DatabaseModule } from 'src/database/database.module';
 import { userProviders } from 'src/user/user.providers';
 
 @Module({
-    imports: [DatabaseModule],
-    providers: [PostService, ...postProviders, ...userProviders],
-    controllers: [PostController]
+  imports: [DatabaseModule],
+  providers: [PostService, ...postProviders, ...userProviders],
+  controllers: [PostController],
 })
 export class PostModule {}

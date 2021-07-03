@@ -1,3 +1,3 @@
 export class EditUserDto {
-    newPassword: string
+  newPassword: string;
 }
