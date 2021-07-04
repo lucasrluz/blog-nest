@@ -10,9 +10,17 @@ export class CommentService {
   ) {}
 
   async findByPost(id_post: number) {
-    return this.commentRepository.find({
+    const comments = await this.commentRepository.find({
       where: { post: { id_post: id_post } },
     });
+
+    if (comments.length === 0) {
+      throw new NotFoundException(
+        'Nenhum comentário encontrado para este post',
+      );
+    }
+
+    return comments;
   }
 
   async findByUser(id_param: number, id_user: number) {
