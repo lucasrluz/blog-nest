@@ -32,7 +32,7 @@ export class CommentService {
       where: { user: { id_user: id_user } },
     });
 
-    if (comments === undefined) {
+    if (comments.length === 0) {
       throw new NotFoundException(
         'Nenhum comentário encontrado para ente usuário.',
       );
