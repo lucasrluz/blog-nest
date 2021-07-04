@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Comment } from './entity/comment.entity';
 
@@ -13,5 +13,23 @@ export class CommentService {
     return this.commentRepository.find({
       where: { post: { id_post: id_post } },
     });
+  }
+
+  async findByUser(id_param: number, id_user: number) {
+    if (id_param != id_user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    const comments = await this.commentRepository.find({
+      where: { user: { id_user: id_user } },
+    });
+
+    if (comments === undefined) {
+      throw new NotFoundException(
+        'Nenhum comentário encontrado para ente usuário.',
+      );
+    }
+
+    return comments;
   }
 }
