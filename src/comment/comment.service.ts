@@ -87,4 +87,20 @@ export class CommentService {
       content: comment.content,
     });
   }
+
+  async deleteComment(id_comment: number, id_post: number, id_user: number) {
+    const comment = await this.commentRepository.findOne({
+      where: {
+        id_comment: id_comment,
+        user: { id_user: id_user },
+        post: { id_post: id_post },
+      },
+    });
+
+    if (comment === undefined) {
+      throw new NotFoundException('Comentário não encontrado.');
+    }
+
+    return this.commentRepository.delete(id_comment);
+  }
 }
