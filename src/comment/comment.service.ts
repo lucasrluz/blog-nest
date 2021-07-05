@@ -1,12 +1,21 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Post } from 'src/post/entity/post.entity';
+import { User } from 'src/user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { Comment } from './entity/comment.entity';
+import { IComment } from './interface/comment.interface';
 
 @Injectable()
 export class CommentService {
   constructor(
     @Inject('COMMENT_REPOSITORY')
     private commentRepository: Repository<Comment>,
+
+    @Inject('USER_REPOSITORY')
+    private userRepository: Repository<User>,
+
+    @Inject('POST_REPOSITORY')
+    private postRepository: Repository<Post>,
   ) {}
 
   async findByPost(id_post: number) {
@@ -39,5 +48,20 @@ export class CommentService {
     }
 
     return comments;
+  }
+
+  async saveComment(id_user: number, id_post: number, comment: IComment) {
+    const post = await this.postRepository.findOne(id_post);
+
+    if (post === undefined) {
+      throw new NotFoundException('Erro ao salvar comentário');
+    }
+
+    const user = await this.userRepository.findOne(id_user);
+
+    comment.user = user;
+    comment.post = post;
+
+    return this.commentRepository.insert(comment);
   }
 }
