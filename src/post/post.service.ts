@@ -31,6 +31,7 @@ export class PostService {
 
     return this.postRepository.insert(post);
   }
+
   async findAll() {
     return this.postRepository.find();
   }
@@ -47,6 +48,10 @@ export class PostService {
 
   async findByUser(username: string) {
     const user = await this.userRepository.findOne({ username: username });
+
+    if (user === undefined) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
 
     return await this.postRepository.find({
       where: { user: { id_user: user.id_user } },
