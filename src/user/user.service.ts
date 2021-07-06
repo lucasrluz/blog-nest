@@ -9,11 +9,20 @@ import { User } from './entity/user.entity';
 import { IUser } from './interface/user.interface';
 import { IEditUser } from './interface/edit-user.interface';
 import * as bcrypt from 'bcrypt';
+import { Comment } from 'src/comment/entity/comment.entity';
+import { Post } from 'src/post/entity/post.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USER_REPOSITORY') private userRepository: Repository<User>,
+    @Inject('USER_REPOSITORY')
+    private userRepository: Repository<User>,
+
+    @Inject('COMMENT_REPOSITORY')
+    private commentRepository: Repository<Comment>,
+
+    @Inject('POST_REPOSITORY')
+    private postRepository: Repository<Post>,
   ) {}
 
   async saveUser(user: IUser) {
@@ -56,6 +65,9 @@ export class UserService {
     if (param_id_user != id_user) {
       throw new InternalServerErrorException('Usuário não encontrado');
     }
+
+    await this.commentRepository.remove(await this.commentRepository.find());
+    await this.postRepository.remove(await this.postRepository.find());
 
     return this.userRepository.delete(id_user);
   }
