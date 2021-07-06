@@ -65,17 +65,11 @@ export class CommentService {
     return this.commentRepository.insert(comment);
   }
 
-  async editComment(
-    id_comment: number,
-    id_user: number,
-    id_post: number,
-    comment: IComment,
-  ) {
+  async editComment(id_comment: number, id_user: number, comment: IComment) {
     const commentValidate = await this.commentRepository.findOne({
       where: {
         id_comment: id_comment,
         user: { id_user: id_user },
-        post: { id_post: id_post },
       },
     });
 
@@ -88,12 +82,11 @@ export class CommentService {
     });
   }
 
-  async deleteComment(id_comment: number, id_post: number, id_user: number) {
+  async deleteComment(id_comment: number, id_user: number) {
     const comment = await this.commentRepository.findOne({
       where: {
         id_comment: id_comment,
         user: { id_user: id_user },
-        post: { id_post: id_post },
       },
     });
 

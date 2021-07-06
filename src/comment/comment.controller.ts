@@ -39,32 +39,22 @@ export class CommentController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id_comment/post/:id_post/')
+  @Put(':id')
   editComment(
-    @Param('id_comment') id_comment: number,
-    @Param('id_post') id_post: number,
+    @Param('id') id_comment: number,
     @Request() req,
     @Body() comment: CreateCommentDto,
   ) {
     return this.commentService.editComment(
       id_comment,
       req.user.id_user,
-      id_post,
       comment,
     );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id_comment/post/:id_post')
-  deleteComment(
-    @Param('id_comment') id_comment: number,
-    @Param('id_post') id_post: number,
-    @Request() req,
-  ) {
-    return this.commentService.deleteComment(
-      id_comment,
-      id_post,
-      req.user.id_user,
-    );
+  @Delete(':id')
+  deleteComment(@Param('id') id_comment: number, @Request() req) {
+    return this.commentService.deleteComment(id_comment, req.user.id_user);
   }
 }
