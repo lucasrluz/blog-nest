@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
@@ -43,7 +44,7 @@ export class UserService {
     newPasswordUser: IEditUser,
   ) {
     if (param_id_user != id_user) {
-      throw new InternalServerErrorException('Usuário não encontrado');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     const newPasswordHash = await bcrypt.hash(newPasswordUser.newPassword, 8);
